@@ -1,0 +1,35 @@
+server {
+    listen 80;
+    server_name ${APP_DOMAIN};
+    set $base /var/www;
+    root $base/public;
+
+    # security
+    include config/security.conf;
+
+    # index.php
+    index index.php;
+
+    # index.php fallback
+    location / {
+        try_files $uri $uri/ /index.php?$query_string;
+    }
+
+    # additional config
+    include config/general.conf;
+
+    # handle .php
+    location ~ \.php$ {
+		try_files $fastcgi_script_name /index.php?$query_string;
+		
+        fastcgi_pass php-fpm:9000;
+        include config/php-fastcgi.conf;
+    }
+}
+
+# subdomains redirect
+server {
+    listen 80;
+    server_name *.${APP_DOMAIN};
+    return 301 http://${APP_DOMAIN}$request_uri;
+}
