@@ -10,7 +10,7 @@ services:
         depends_on:
             - mysql
             - nginx
-        user: ${USER_ID:-1000}
+        user: '${USER_ID:-1000}'
         volumes:
             - ./src:/var/www
             - ./doc/php-fpm/php.ini-development:/usr/local/etc/php/php.ini
