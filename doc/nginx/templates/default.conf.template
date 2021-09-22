@@ -4,21 +4,16 @@ server {
     set $base /var/www;
     root $base/public;
 
-    # security
     include config/security.conf;
 
-    # index.php
     index index.php;
 
-    # index.php fallback
     location / {
         try_files $uri $uri/ /index.php?$query_string;
     }
 
-    # additional config
     include config/general.conf;
 
-    # handle .php
     location ~ \.php$ {
 		try_files $fastcgi_script_name /index.php?$query_string;
 		
@@ -27,7 +22,6 @@ server {
     }
 }
 
-# subdomains redirect
 server {
     listen 80;
     server_name *.${APP_DOMAIN};

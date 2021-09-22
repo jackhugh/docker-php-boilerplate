@@ -4,15 +4,13 @@ services:
         build:
             context: .
             dockerfile: ./doc/php-fpm/Dockerfile
-            args:
-                UID: ${USER_ID}
-                GID: ${GROUP_ID}
         image: ${APP_NAME}-php-fpm
         container_name: php-fpm
         working_dir: /var/www
         depends_on:
             - mysql
             - nginx
+        user: ${USER_ID:-1000}
         volumes:
             - ./src:/var/www
             - ./doc/php-fpm/php.ini-development:/usr/local/etc/php/php.ini
